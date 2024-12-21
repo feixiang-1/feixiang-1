@@ -1,0 +1,463 @@
+{
+    "log": {
+        "disabled": false,
+        "level": "warn",
+        "output": "box.log",
+        "timestamp": true
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "tencentDNS",
+                "address": "tls://120.53.53.53",
+                "detour": "DIRECT"
+            },
+            {
+                "tag": "aliDNS",
+                "address": "https://223.6.6.6/dns-query",
+                "detour": "DIRECT"
+            },
+            {
+                "tag": "cloudflareDNS",
+                "address": "https://1.1.1.1/dns-query",
+                "detour": "PROXY"
+            },
+            {
+                "tag": "localDNS",
+                "address": "10.0.0.1",
+                "detour": "DIRECT"
+            },
+            {
+                "tag": "refusedDNS",
+                "address": "rcode://success"
+            },
+            {
+                "tag": "fakeipDNS",
+                "address": "fakeip"
+            }
+        ],
+        "rules": [
+            {
+                "outbound": "any",
+                "server": "tencentDNS"
+            },
+            {
+                "query_type": [
+                    "AAAA",
+                ],
+                "server": "refusedDNS",
+                "disable_cache": true
+            },
+            {
+                "invert": true,
+                "protocol": "dns",
+                "server": "refusedDNS",
+                "disable_cache": true
+            },
+            {
+                "rule_set": "geosite-private",
+                "server": "localDNS"
+            },
+            {
+                "rule_set": [
+                    "geosite-geolocation-cn",
+                    "geosite-win-update",
+                    "geosite-apple"
+                ],
+                "server": "tencentDNS"
+            },
+            {
+                "query_type": "A",
+                "rule_set": [
+                    "geosite-google",
+                    "geosite-github",
+                    "geosite-telegram",
+                    "geosite-openai",
+                    "geosite-steam",
+                    "geosite-gfw"
+                ],
+                "server": "fakeipDNS",
+                "rewrite_ttl": 10
+            },
+            {
+                "query_type": [
+                    "A",
+                    "CNAME",
+                    "SVCB",
+                    "HTTPS"
+                ],
+                "server": "cloudflareDNS"
+            }
+        ],
+        "final": "localDNS",
+        "strategy": "ipv4_only",
+        "disable_cache": false,
+        "disable_expire": false,
+        "independent_cache": true,
+        "reverse_mapping": false,
+        "fakeip": {
+            "enabled": true,
+            "inet4_range": "198.18.0.0/15"
+        }
+    },
+    "inbounds": [
+        {
+            "tag": "TPROXY-IN",
+            "type": "tproxy",
+            "listen": "0.0.0.0",
+            "listen_port": 7895,
+            "udp_timeout": 180,
+            "sniff": true
+        },
+        {
+            "tag": "MIXED-MAIN-IN",
+            "type": "mixed",
+            "listen": "0.0.0.0",
+            "listen_port": 7900,
+            "udp_timeout": 180,
+            "sniff": true
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "PROXY",
+            "type": "selector",
+            "outbounds": [
+                "PROXY_REALITY",
+                "PROXY_TROJAN"
+            ],
+            "default": "PROXY_REALITY",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "FINAL",
+            "type": "selector",
+            "outbounds": [
+                "PROXY",
+                "DIRECT"
+            ],
+            "default": "PROXY",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "APPLE",
+            "type": "selector",
+            "outbounds": [
+                "PROXY",
+                "DIRECT",
+                "PROXY_REALITY",
+                "PROXY_TROJAN"
+            ],
+            "default": "DIRECT",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "STEAM",
+            "type": "selector",
+            "outbounds": [
+                "PROXY",
+                "DIRECT",
+                "PROXY_REALITY",
+                "PROXY_TROJAN"
+            ],
+            "default": "PROXY",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "OPENAI",
+            "type": "selector",
+            "outbounds": [
+                "PROXY",
+                "DIRECT",
+                "PROXY_REALITY",
+                "PROXY_TROJAN"
+            ],
+            "default": "PROXY_REALITY",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "TELEGRAM",
+            "type": "selector",
+            "outbounds": [
+                "PROXY",
+                "DIRECT",
+                "PROXY_REALITY",
+                "PROXY_TROJAN"
+            ],
+            "default": "PROXY_REALITY",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "DOWNLOADER",
+            "type": "selector",
+            "outbounds": [
+                "PROXY",
+                "DIRECT",
+                "PROXY_REALITY",
+                "PROXY_TROJAN"
+            ],
+            "default": "DIRECT",
+            "interrupt_exist_connections": true
+        },
+        {
+            "tag": "PROXY_TROJAN",
+            "type": "trojan",
+            "server": "exp1.com",
+            "server_port": 443,
+            "password": "passwd",
+            "tls": {
+                "enabled": true,
+                "server_name": "exp.com",
+                "insecure": false,
+                "utls": {
+                    "enabled": true,
+                    "fingerprint": "chrome"
+                }
+            },
+            "multiplex": {
+                "enabled": true,
+                "protocol": "h2mux",
+                "max_streams": 6,
+                "padding": true
+            }
+        },
+        {
+            "tag": "PROXY_REALITY",
+            "type": "vless",
+            "server": "1.2.3.4",
+            "server_port": 443,
+            "uuid": "xx",
+            "tls": {
+                "enabled": true,
+                "server_name": "exp2.com",
+                "utls": {
+                    "enabled": true,
+                    "fingerprint": "chrome"
+                },
+                "reality": {
+                    "enabled": true,
+                    "public_key": "xx",
+                    "short_id": "xx"
+                }
+            },
+            "multiplex": {
+                "enabled": true,
+                "protocol": "h2mux",
+                "max_streams": 6,
+                "padding": true
+            }
+        },
+        {
+            "tag": "DIRECT",
+            "type": "direct"
+        },
+        {
+            "tag": "DNS-OUT",
+            "type": "dns"
+        },
+        {
+            "tag": "BLOCK",
+            "type": "block"
+        }
+    ],
+    "route": {
+        "rules": [
+            {
+                "protocol": "dns",
+                "outbound": "DNS-OUT"
+            },
+            {
+                "port": 53,
+                "outbound": "DNS-OUT"
+            },
+            {
+                "rule_set": "geosite-private",
+                "outbound": "DIRECT"
+            },
+            {
+                "clash_mode": "direct",
+                "outbound": "DIRECT"
+            },
+            {
+                "clash_mode": "global",
+                "outbound": "PROXY"
+            },
+            {
+                "rule_set": "geosite-apple",
+                "outbound": "APPLE"
+            },
+            {
+                "rule_set": "geosite-openai",
+                "outbound": "OPENAI"
+            },
+            {
+                "rule_set": [
+                    "geosite-telegram",
+                    "geoip-telegram"
+                ],
+                "outbound": "TELEGRAM"
+            },
+            {
+                "rule_set": [
+                    "geosite-google",
+                    "geosite-github",
+                    "geosite-debian",
+                    "geosite-gfw"
+                ],
+                "outbound": "PROXY"
+            },
+            {
+                "rule_set": [
+                    "geoip-private",
+                    "geoip-cn",
+                    "geosite-geolocation-cn",
+                    "geosite-win-update"
+                ],
+                "outbound": "DIRECT"
+            },
+            {
+                "rule_set": "geosite-steam",
+                "outbound": "STEAM"
+            },
+            {
+                "source_ip_cidr": "10.0.0.10/32",
+                "outbound": "DOWNLOADER"
+            }
+        ],
+        "rule_set": [
+            {
+                "tag": "geosite-private",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/private.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-google",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-geolocation-cn",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-cn.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-win-update",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/win-update.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-apple",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/apple.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-github",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/github.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geoip-telegram",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "30d"
+            },
+            {
+                "tag": "geosite-telegram",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/telegram.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-bing",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/bing.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-openai",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/openai.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-steam",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/steam.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-debian",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/debian.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geosite-gfw",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/gfw.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geoip-private",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/private.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            },
+            {
+                "tag": "geoip-cn",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.json",
+                "download_detour": "PROXY_TROJAN",
+                "update_interval": "999d"
+            }
+        ],
+        "final": "FINAL",
+        "auto_detect_interface": true,
+        "default_mark": 666
+    },
+    "experimental": {
+        "clash_api": {
+            "external_controller": "0.0.0.0:9090",
+            "external_ui": "yacd",
+            "external_ui_download_url": "https://github.com/MetaCubeX/Yacd-meta/archive/gh-pages.zip",
+            "external_ui_download_detour": "PROXY_TROJAN",
+            "secret": "passwd",
+            "default_mode": "rule"
+        }
+    }
+}
