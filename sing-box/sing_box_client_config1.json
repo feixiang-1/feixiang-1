@@ -43,7 +43,7 @@
             },
             {
                 "query_type": [
-                    "AAAA",
+                    "AAAA"
                 ],
                 "server": "refusedDNS",
                 "disable_cache": true
