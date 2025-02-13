@@ -37,5 +37,5 @@ jobs:
           git config user.name "Your GitHub Username"
           git config user.email "your-email@example.com"
           git add .
-          git commit -m "Move clash/config from abc/abc"
+          git commit -m "Auto Commit"
           git push origin main  # 或者其他分支
