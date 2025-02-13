@@ -17,25 +17,30 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      # 2. 克隆 ACL4SSR/ACL4SSR 仓库
+      # 克隆 ACL4SSR/ACL4SSR 仓库
       - name: Clone ACL4SSR/ACL4SSR repository
         run: |
           git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
           pwd
           ls -la
-      # 3. 移动 Clash/config 目录到当前仓库根目录
+      # 移动 Clash/config 目录到当前仓库根目录
       - name: Move Clash/config directory
         run: |
-          
           pwd
           cp -rf ./ACL4SSR/Clash/config ./config
           rm -rf ./ACL4SSR
 
-      # 4. 更新自身仓库
-      - name: Push changes to the current repository
+      # 提交更改
+      - name: Commit changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "GitHub-Actions@github.com"
           git add .
-          git commit -m "Auto Commit"
-          git push origin main  # 或者其他分支
+          git commit -m "Auto Update Files [skip ci]" || echo "No changes to commit"
+
+      # 推送更改
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin master
