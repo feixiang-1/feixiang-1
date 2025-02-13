@@ -17,7 +17,7 @@ jobs:
         mkdir -p ./downloaded_files
 
         # 使用 SVN 下载指定文件夹到目标目录
-        svn checkout https://github.com/ACL4SSR/ACL4SSR/trunk/Clash/config ./downloaded_files
+        svn checkout https://github.com/ACL4SSR/ACL4SSR/branches/master/Clash/config ./downloaded_files
 
     - name: Set up Git for committing
       run: |
