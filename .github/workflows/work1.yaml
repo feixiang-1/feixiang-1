@@ -10,6 +10,8 @@ jobs:
     steps:
     - name: Checkout specific folder using SVN
       run: |
+        ls -la
+        
         echo pwd
         # 创建目标目录
         mkdir -p ./acl4ssr_clash_config
