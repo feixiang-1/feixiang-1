@@ -17,19 +17,19 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      # 2. 克隆 abc/abc 仓库
-      - name: Clone abc/abc repository
+      # 2. 克隆 ACL4SSR/ACL4SSR 仓库
+      - name: Clone ACL4SSR/ACL4SSR repository
         run: |
           git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
           pwd
           ls -la
-      # 3. 移动 clash/config 目录到当前仓库根目录
-      - name: Move clash/config directory
+      # 3. 移动 Clash/config 目录到当前仓库根目录
+      - name: Move Clash/config directory
         run: |
           
           pwd
-          ls -la
-          mv ACL4SSR/Clash/config ./config
+          mv ./ACL4SSR/Clash/config ./config
+          rm -rf ./ACL4SSR
 
       # 4. 更新自身仓库
       - name: Push changes to the current repository
