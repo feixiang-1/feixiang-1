@@ -24,18 +24,18 @@ jobs:
         ls -la
         
 
-    - name: Set up Git for committing
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "github-actions@users.noreply.github.com"
+    # - name: Set up Git for committing
+    #   run: |
+    #     git config --global user.name "GitHub Actions"
+    #     git config --global user.email "github-actions@users.noreply.github.com"
 
-    - name: Commit and push changes
-      run: |
-        # 添加下载的文件夹到 git 索引
-        git add ./downloaded_files
+    # - name: Commit and push changes
+    #   run: |
+    #     # 添加下载的文件夹到 git 索引
+    #     git add ./downloaded_files
 
-        # 提交文件
-        git commit -m "Add downloaded files"
+    #     # 提交文件
+    #     git commit -m "Add downloaded files"
 
-        # 推送提交到当前仓库
-        git push origin HEAD:main  # 如果你的默认分支是 `main`
+    #     # 推送提交到当前仓库
+    #     git push origin HEAD:main  # 如果你的默认分支是 `main`
