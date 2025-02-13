@@ -6,24 +6,38 @@ on:
 jobs:
   download_and_commit:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout specific folder using SVN
-      run: |
-        ls -la
-        
-        echo pwd
-        # 创建目标目录
-        mkdir -p ./acl4ssr_clash_config
 
-        mkdir -p ../ACL4SSR
+      - name: set Asia/Shanghai timezone
+        uses: szenius/set-timezone@v1.2 # 设置虚拟环境的时区，可更改时区
+        with:
+          timezoneLinux: "Asia/Shanghai"
 
-        cd ../ACL4SSR
+      # 检出代码
+      - name: Check out code
+        uses: actions/checkout@v3
 
-        git clone -b master https://github.com/ACL4SSR/ACL4SSR.git .
+      - name: Checkout specific folder using SVN
+        run: |
+          ls -la
+          
+          pwd
 
-        # 使用 SVN 下载指定文件夹到目标目录
-        ls -la
+          mkdir -p ./acl4ssr_clash_config
+
+          mkdir -p ../ACL4SSR
+
+          cd ../ACL4SSR
+
+          git clone -b master https://github.com/ACL4SSR/ACL4SSR.git .
+
+          pwd
+
+          ls -la
+
+
+
+
         
 
     # - name: Set up Git for committing
