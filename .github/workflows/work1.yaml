@@ -27,7 +27,7 @@ jobs:
       - name: Move Clash/config directory
         run: |
           pwd
-          cp -rf ./ACL4SSR/Clash/config ./config
+          cp -rf ./ACL4SSR/Clash/config ./
           rm -rf ./ACL4SSR
 
       # 提交更改
