@@ -21,11 +21,15 @@ jobs:
       - name: Clone abc/abc repository
         run: |
           git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
-
+          pwd
+          ls -la
       # 3. 移动 clash/config 目录到当前仓库根目录
       - name: Move clash/config directory
         run: |
-          mv Clash/config ./config
+          
+          pwd
+          ls -la
+          mv ACL4SSR/Clash/config ./config
 
       # 4. 更新自身仓库
       - name: Push changes to the current repository
