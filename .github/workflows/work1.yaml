@@ -34,8 +34,8 @@ jobs:
       # 4. 更新自身仓库
       - name: Push changes to the current repository
         run: |
-          git config user.name "Your GitHub Username"
-          git config user.email "your-email@example.com"
+          git config user.name "GitHub Actions"
+          git config user.email "GitHub-Actions@github.com"
           git add .
           git commit -m "Auto Commit"
           git push origin main  # 或者其他分支
