@@ -1,0 +1,36 @@
+name: Update ACL rules
+
+on:
+  workflow_dispatch:  # 手动触发工作流
+
+jobs:
+  download_and_commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install SVN
+      run: sudo apt-get update && sudo apt-get install -y subversion
+
+    - name: Checkout specific folder using SVN
+      run: |
+        # 创建目标目录
+        mkdir -p ./downloaded_files
+
+        # 使用 SVN 下载指定文件夹到目标目录
+        svn checkout https://github.com/ACL4SSR/ACL4SSR/mater/Clash/config ./downloaded_files
+
+    - name: Set up Git for committing
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "github-actions@users.noreply.github.com"
+
+    - name: Commit and push changes
+      run: |
+        # 添加下载的文件夹到 git 索引
+        git add ./downloaded_files
+
+        # 提交文件
+        git commit -m "Add downloaded files"
+
+        # 推送提交到当前仓库
+        git push origin HEAD:main  # 如果你的默认分支是 `main`
