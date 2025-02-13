@@ -13,11 +13,19 @@ jobs:
 
     - name: Checkout specific folder using SVN
       run: |
+        echo pwd
         # 创建目标目录
-        mkdir -p ./downloaded_files
+        mkdir -p ./acl4ssr_clash_config
+
+        mkdir -p ../ACL4SSR
+
+        cd ../ACL4SSR
+
+        git clone -b master https://github.com/ACL4SSR/ACL4SSR.git .
 
         # 使用 SVN 下载指定文件夹到目标目录
-        svn checkout https://github.com/ACL4SSR/ACL4SSR/branches/master/Clash/config ./downloaded_files
+        ls -la
+        
 
     - name: Set up Git for committing
       run: |
