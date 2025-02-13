@@ -28,7 +28,7 @@ jobs:
         run: |
           
           pwd
-          mv -f ./ACL4SSR/Clash/config ./config
+          cp -rf ./ACL4SSR/Clash/config ./config
           rm -rf ./ACL4SSR
 
       # 4. 更新自身仓库
