@@ -17,41 +17,21 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Checkout specific folder using SVN
+      # 2. 克隆 abc/abc 仓库
+      - name: Clone abc/abc repository
         run: |
-          ls -la
-          
-          pwd
+          git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
 
-          mkdir -p ./acl4ssr_clash_config
+      # 3. 移动 clash/config 目录到当前仓库根目录
+      - name: Move clash/config directory
+        run: |
+          mv Clash/config ./config
 
-          mkdir -p ../ACL4SSR
-
-          cd ../ACL4SSR
-
-          git clone -b master https://github.com/ACL4SSR/ACL4SSR.git .
-
-          pwd
-
-          ls -la
-
-
-
-
-        
-
-    # - name: Set up Git for committing
-    #   run: |
-    #     git config --global user.name "GitHub Actions"
-    #     git config --global user.email "github-actions@users.noreply.github.com"
-
-    # - name: Commit and push changes
-    #   run: |
-    #     # 添加下载的文件夹到 git 索引
-    #     git add ./downloaded_files
-
-    #     # 提交文件
-    #     git commit -m "Add downloaded files"
-
-    #     # 推送提交到当前仓库
-    #     git push origin HEAD:main  # 如果你的默认分支是 `main`
+      # 4. 更新自身仓库
+      - name: Push changes to the current repository
+        run: |
+          git config user.name "Your GitHub Username"
+          git config user.email "your-email@example.com"
+          git add .
+          git commit -m "Move clash/config from abc/abc"
+          git push origin main  # 或者其他分支
