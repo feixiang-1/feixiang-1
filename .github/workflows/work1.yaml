@@ -9,9 +9,9 @@ jobs:
   download_and_commit:
     runs-on: ubuntu-latest
     steps:
-
+       # 设置虚拟环境的时区，可更改时区
       - name: set Asia/Shanghai timezone
-        uses: szenius/set-timezone@v1.2 # 设置虚拟环境的时区，可更改时区
+        uses: szenius/set-timezone@v1.2
         with:
           timezoneLinux: "Asia/Shanghai"
 
@@ -25,7 +25,6 @@ jobs:
           git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
           pwd
           ls -la
-          
       # 移动 Clash/config 目录到当前仓库根目录
       - name: Move Clash/config directory
         run: |
