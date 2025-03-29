@@ -23,6 +23,7 @@ jobs:
           git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
           pwd
           ls -la
+          
       # 移动 Clash/config 目录到当前仓库根目录
       - name: Move Clash/config directory
         run: |
@@ -30,7 +31,17 @@ jobs:
           rm -rf ./config
           cp -rf ./ACL4SSR/Clash/config ./
           rm -rf ./ACL4SSR
-
+          
+      # 克隆 zxfccmm4/Surge 仓库
+      - name: Clone ACL4SSR/ACL4SSR repository
+        run: |
+          git clone --depth 1 --branch main https://github.com/zxfccmm4/Surge.git
+          pwd
+          ls -la
+          rm -rf ./config1
+          cp -rf ./Surge/Clash ./config1
+          rm -rf ./Surge
+          
       # 提交更改
       - name: Commit changes
         run: |
