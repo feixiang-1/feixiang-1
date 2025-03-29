@@ -33,7 +33,7 @@ jobs:
           rm -rf ./ACL4SSR
           
       # 克隆 zxfccmm4/Surge 仓库
-      - name: Clone ACL4SSR/ACL4SSR repository
+      - name: Clone zxfccmm4/Surge repository
         run: |
           git clone --depth 1 --branch main https://github.com/zxfccmm4/Surge.git
           pwd
