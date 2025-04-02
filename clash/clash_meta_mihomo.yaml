@@ -116,15 +116,16 @@ proxies:
     udp: true
 
 # 锚点
-pr: &pr { type: select, proxies: [♻️ 自动选择, ♻️ SA自动, ♻️ EU自动, ♻️ CA自动, ♻️ HK自动, ♻️ SG自动, ♻️ JP自动, ♻️ US自动, ♻️ TW自动, ♻️ KR自动] }
-pr1: &pr1 { type: url-test, proxies: [♻️ SA自动, ♻️ EU自动, ♻️ CA自动, ♻️ SG自动, ♻️ JP自动, ♻️ US自动, ♻️ TW自动, ♻️ KR自动] }
+pr: &pr { type: select, proxies: [♻️ 自动选择, ♻️ SG自动, ♻️ TW自动, ♻️ JP自动, ♻️ KR自动, ♻️ SA自动, ♻️ US自动, ♻️ EU自动, ♻️ CA自动] }
+pr1: &pr1 { type: url-test, proxies: [♻️ SG自动, ♻️ TW自动, ♻️ JP自动, ♻️ KR自动, ♻️ SA自动, ♻️ US自动, ♻️ EU自动, ♻️ CA自动] }
 
 # 策略组
 proxy-groups:
-  - { name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, ♻️ SA自动, ♻️ EU自动, ♻️ CA自动, ♻️ HK自动, ♻️ SG自动, ♻️ JP自动, ♻️ US自动, ♻️ TW自动, ♻️ KR自动, 🌐 全部节点, 🟢 直连] }
+  - { name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, ♻️ SG自动, ♻️ TW自动, ♻️ JP自动, ♻️ KR自动, ♻️ SA自动, ♻️ HK自动, ♻️ US自动, ♻️ EU自动, ♻️ CA自动, 🌐 全部节点, 🟢 直连] }
   - { name: 📹 YouTube, !!merge <<: *pr }
   - { name: 🍀 Google, !!merge <<: *pr }
   - { name: 🤖 ChatGPT, !!merge <<: *pr1 }
+  - { name: 😄 自定义规则, !!merge <<: *pr1 }
   - { name: 👨🏿‍💻 GitHub, !!merge <<: *pr }
   - { name: 🐬 OneDrive, !!merge <<: *pr }
   - { name: 🪟 Microsoft, !!merge <<: *pr }
@@ -151,6 +152,7 @@ rules:
   - RULE-SET,private_ip,🟢 直连,no-resolve
   - RULE-SET,private_domain,🟢 直连
   - RULE-SET,apple_domain,🍎 Apple
+  - RULE-SET,ProxyGFWlist,😄 自定义规则
   - RULE-SET,proxylite,🚀 节点选择
   - RULE-SET,ai,🤖 ChatGPT
   - RULE-SET,github_domain,👨🏿‍💻 GitHub
@@ -176,9 +178,14 @@ rule-anchor:
   qcy: &qcy { type: http, interval: 86400, behavior: domain, format: text }
   class: &class { type: http, interval: 86400, behavior: classical, format: text }
 rule-providers:
+
+
   private_domain: { !!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
+  
   proxylite: { !!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/ProxyLite.list" }
   ai: { !!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/AI.list" }
+  ProxyGFWlist: { !!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/ProxyGFWlist.list" }
+
   youtube_domain: { !!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: { !!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
   github_domain: { !!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs" }
