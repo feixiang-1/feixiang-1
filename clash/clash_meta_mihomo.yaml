@@ -116,12 +116,12 @@ proxies:
     udp: true
 
 # 锚点
-pr: &pr { type: select, proxies: [♻️ 自动选择, 🚀 节点选择, ♻️ 新加坡自动, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, 🌐 全部节点, 🟢 直连] }
-pr1: &pr1 { type: url-test, proxies: [♻️ 日本自动, ♻️ 新加坡自动, ♻️ 美国自动] }
+pr: &pr { type: select, proxies: [♻️ 自动选择, ♻️ SA自动, ♻️ EU自动, ♻️ CA自动, ♻️ HK自动, ♻️ SG自动, ♻️ JP自动, ♻️ US自动, ♻️ TW自动, ♻️ KR自动] }
+pr1: &pr1 { type: url-test, proxies: [♻️ SA自动, ♻️ EU自动, ♻️ CA自动, ♻️ SG自动, ♻️ JP自动, ♻️ US自动, ♻️ TW自动, ♻️ KR自动] }
 
 # 策略组
 proxy-groups:
-  - { name: 🚀 节点选择, type: select, proxies: [♻️ 香港自动, ♻️ 新加坡自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🌐 全部节点, 🟢 直连] }
+  - { name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, ♻️ SA自动, ♻️ EU自动, ♻️ CA自动, ♻️ HK自动, ♻️ SG自动, ♻️ JP自动, ♻️ US自动, ♻️ TW自动, ♻️ KR自动, 🌐 全部节点, 🟢 直连] }
   - { name: 📹 YouTube, !!merge <<: *pr }
   - { name: 🍀 Google, !!merge <<: *pr }
   - { name: 🤖 ChatGPT, !!merge <<: *pr1 }
@@ -136,10 +136,15 @@ proxy-groups:
   - { name: 🍎 Apple, type: select, proxies: [🟢 直连, 🚀 节点选择] }
   - { name: 🎯 全球直连, type: select, proxies: [🟢 直连, 🚀 节点选择] }
   - { name: 🐟 漏网之鱼, !!merge <<: *pr }
-  - { name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$" }
-  - { name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
-  - { name: ♻️ 新加坡自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(新|SG|(?i)Singapore))^((?!(港|台|韩|日|美)).)*$" }
-  - { name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$" }
+  - { name: ♻️ SA自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)东南亚|SEA|马来西亚|Malaysia|MY|泰国|Thailand|TH|印尼|Indonesia|ID|菲律宾|Philippines|PH|越南|Vietnam|VN|柬埔寨|Cambodia|KH|缅甸|Myanmar|MM|老挝|Laos|LA|文莱|Brunei|BN)" }
+  - { name: ♻️ EU自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)欧洲|EU|United Kingdom|UK|英国|France|FR|法国|Germany|DE|德国|Netherlands|NL|荷兰|Italy|IT|意大利|Spain|ES|西班牙|Sweden|SE|瑞典|Denmark|DK|丹麦|Finland|FI|芬兰|Norway|NO|挪威|Switzerland|CH|瑞士|Austria|AT|奥地利|Belgium|BE|比利时|Poland|PL|波兰|Ireland|IE|爱尔兰)" }
+  - { name: ♻️ CA自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)加拿大|CA|Canada|温哥华|多伦多|蒙特利尔|卡尔加里|渥太华|温尼伯|埃德蒙顿|维多利亚)" }
+  - { name: ♻️ HK自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)香港|港|HK|Hong Kong|HongKong)" }
+  - { name: ♻️ SG自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)新加坡|坡|狮城|SG|Singapore)" }
+  - { name: ♻️ JP自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)日本|JP|Japan|东京|大阪|北海道|名古屋|福冈|京都|广岛|神户|冲绳|横滨|埼玉|川日|泉日|沪日|深日|[^-]日)" }
+  - { name: ♻️ US自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)美国|US|United States|洛杉矶|旧金山|圣何塞|硅谷|圣克拉拉|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|拉斯维加斯|西雅图|芝加哥|纽约|迈阿密|华盛顿|波士顿|休斯顿|底特律|费城)" }
+  - { name: ♻️ TW自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)台湾|台|TW|Taiwan|台北|新北|高雄|台中|台南|彰化|南投|桃园)" }
+  - { name: ♻️ KR自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "((?i)韩国|韩|韓|KR|Korea|KOR|首尔|釜山|仁川|大邱|光州|水原)" }
   - { name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$" }
   - { name: 🌐 全部节点, type: select, include-all: true }
 rules:
