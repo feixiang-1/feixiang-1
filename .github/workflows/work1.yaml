@@ -32,6 +32,10 @@ jobs:
           rm -rf ./config
           cp -rf ./ACL4SSR/Clash/config ./
           rm -rf ./ACL4SSR
+
+      - name: Insert SEA custom proxy group
+        run: |
+          python3 scripts/add_sea_group.py
           
       # 提交更改
       - name: Commit changes
