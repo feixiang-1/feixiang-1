@@ -3,13 +3,13 @@ from __future__ import annotations
 from pathlib import Path
 
 TARGET_LINE = (
-    "custom_proxy_group=SEA东南亚节点`url-test`(越南|Vietnam|VN|印尼|Indonesia|ID|尼泊尔|Nepal|NP|"
+    "custom_proxy_group=🌏东南亚节点`url-test`(越南|Vietnam|VN|印尼|Indonesia|ID|尼泊尔|Nepal|NP|"
     "柬埔寨|Cambodia|KH|缅甸|Myanmar|MM|马来西亚|Malaysia|MY)`"
     "http://www.gstatic.com/generate_204`300,,50"
 )
 KOREA_PREFIX = "custom_proxy_group=🇰🇷 韩国节点"
 KOREA_REF_TOKEN = "[]🇰🇷 韩国节点`"
-SEA_REF_TOKEN = "[]SEA东南亚节点`"
+SEA_REF_TOKEN = "[]🌏东南亚节点`"
 
 
 def ensure_trailing_newline(text: str) -> str:
