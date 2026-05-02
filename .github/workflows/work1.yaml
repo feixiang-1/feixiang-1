@@ -1,53 +1,53 @@
 name: Update ACL rules
 
 on:
-  schedule:
-    - cron: "0 0 1 * *"  # 每月1号 00:00 UTC 运行
-  workflow_dispatch:  # 允许手动触发
+    schedule:
+        - cron: "0 0 1 * *" # 每月1号 00:00 UTC 运行
+    workflow_dispatch: # 允许手动触发
 
 jobs:
-  download_and_commit:
-    runs-on: ubuntu-latest
-    steps:
-       # 设置虚拟环境的时区，可更改时区
-      - name: set Asia/Shanghai timezone
-        uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "Asia/Shanghai"
+    download_and_commit:
+        runs-on: ubuntu-latest
+        steps:
+            # 设置虚拟环境的时区，可更改时区
+            - name: set Asia/Shanghai timezone
+              uses: szenius/set-timezone@v2.0
+              with:
+                  timezoneLinux: "Asia/Shanghai"
 
-      # 检出代码
-      - name: Check out code
-        uses: actions/checkout@v3
+            # 检出代码
+            - name: Check out code
+              uses: actions/checkout@v6.0.3
 
-      # 克隆 ACL4SSR/ACL4SSR 仓库
-      - name: Clone ACL4SSR/ACL4SSR repository
-        run: |
-          git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
-          pwd
-          ls -la
-      # 移动 Clash/config 目录到当前仓库根目录
-      - name: Move Clash/config directory
-        run: |
-          pwd
-          rm -rf ./config
-          cp -rf ./ACL4SSR/Clash/config ./
-          rm -rf ./ACL4SSR
+            # 克隆 ACL4SSR/ACL4SSR 仓库
+            - name: Clone ACL4SSR/ACL4SSR repository
+              run: |
+                  git clone --depth 1 --branch master https://github.com/ACL4SSR/ACL4SSR.git
+                  pwd
+                  ls -la
+            # 移动 Clash/config 目录到当前仓库根目录
+            - name: Move Clash/config directory
+              run: |
+                  pwd
+                  rm -rf ./config
+                  cp -rf ./ACL4SSR/Clash/config ./
+                  rm -rf ./ACL4SSR
 
-      - name: Insert SEA custom proxy group
-        run: |
-          python3 scripts/add_sea_group.py
-          
-      # 提交更改
-      - name: Commit changes
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "GitHub-Actions@github.com"
-          git add .
-          git commit -m "Auto Update Files [skip ci]" || echo "No changes to commit"
+            - name: Insert SEA custom proxy group
+              run: |
+                  python3 scripts/add_sea_group.py
 
-      # 推送更改
-      - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git push origin main
+            # 提交更改
+            - name: Commit changes
+              run: |
+                  git config user.name "GitHub Actions"
+                  git config user.email "GitHub-Actions@github.com"
+                  git add .
+                  git commit -m "Auto Update Files [skip ci]" || echo "No changes to commit"
+
+            # 推送更改
+            - name: Push changes
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  git push origin main
