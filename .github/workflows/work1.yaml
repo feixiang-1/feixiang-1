@@ -17,7 +17,7 @@ jobs:
 
             # 检出代码
             - name: Check out code
-              uses: actions/checkout@v6.0.3
+              uses: actions/checkout@v6
 
             # 克隆 ACL4SSR/ACL4SSR 仓库
             - name: Clone ACL4SSR/ACL4SSR repository
